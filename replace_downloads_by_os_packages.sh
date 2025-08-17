@@ -25,7 +25,7 @@ printf "%s\n" "$jspkg" | cut -d/ -f 5,6 | sort -u | \
 		ln -s "/usr/share/nodejs/$line" "node_modules/$line" || true
 	done
 
-printf "%s\n" "$2" | tr ', ' '\n\n' | grep -vE '^$' | sort -u \
+printf "%s\n" "$2" | tr ', \t' '\n\n\n' | grep -vE '^$' | sort -u \
 							> /tmp/expectpkg$$.txt
 find -H node_modules -maxdepth 2 -mindepth 1 -type d | cut -d/ -f 2- | \
 	grep -E '^([^@.][^/]+|@[^/]+\/[^/]+)$' | sort -u > /tmp/havepkg$$.txt
