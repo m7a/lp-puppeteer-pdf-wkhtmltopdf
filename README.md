@@ -36,11 +36,10 @@ For example:
 
 	chromium --headless --disable-gpu --no-pdf-header-footer --print-to-pdf=masysma.net.pdf https://masysma.net
 
-While this indeed creates a PDF, not even a custom page size cannot be set via
-the command line. The general approach of using a headless browser seems to
-still be the best bet when looking for an alternative to WKHTMLTOPDF. In order
-to get more options, a tool interfacing using the web browser's own API is
-required.
+While this indeed creates a PDF, not even a custom page size may be set via the
+command line. The general approach of using a headless browser seems to still be
+the best bet when looking for an alternative to WKHTMLTOPDF. In order to get
+more options, a tool interfacing using the web browser's own API is required.
 
 ## Introducing Puppeteer
 
