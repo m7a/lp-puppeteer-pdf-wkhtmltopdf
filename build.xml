@@ -122,8 +122,9 @@ puppeteer-pdf /usr/bin
 		check what we have on the system already.
 		shell-out to a script to do the list processing
 	-->
-	<exec dir="src" executable="../replace_downloads_by_os_packages.sh"
-							failonerror="true">
+	<exec dir="src" executable="/bin/sh" failonerror="true">
+		<arg value="-eu"/>
+		<arg value="../replace_downloads_by_os_packages.sh"/>
 		<arg value="${masysma.nodejspackages}"/>
 		<arg value="${masysma.nodejsnotindebian}"/>
 	</exec>
