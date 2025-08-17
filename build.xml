@@ -51,7 +51,7 @@
 <property name="mdpc.section"    value="utils"/>
 <property name="mdpc.arch"       value="all"/>
 <property name="mdpc.descrs"     value="puppeteer-pdf and wkhtmltopdf scripts"/>
-<property name="mdpc.bdep"       value="diff, node, ${masysma.nodejspackages}"/>
+<property name="mdpc.bdep">diffutils, node, ${masysma.nodejspackages}</property>
 <property name="mdpc.depends"    value="${masysma.nodejspackages}"/>
 <property name="mdpc.recommends" value="chromium"/>
 <property name="mdpc.descrl">
