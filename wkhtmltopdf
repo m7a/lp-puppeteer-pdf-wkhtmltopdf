@@ -1,0 +1,98 @@
+#!/bin/sh -eu
+# WKHTMLTOPDF using puppeteer-pdf v1.0.0 (c) 2025 Ma_Sys.ma <info@masysma.net>
+#
+# USAGE wkhtmltopdf [OPTIONS] <IN-URL> <PDF-FILE>
+#
+# OPTIONS:
+#   -O|--orientation Portrait|Landscape
+#   -s|--page-size A4
+#   -B|--margin-bottom 10mm
+#   -L|--margin-left 10mm
+#   -R|--margin-right 10mm
+#   -T|--margin-top 10mm
+#   --background
+#   --no-background
+#   --page-height 297mm
+#   --page-width 210mm
+#
+# IN-URL:
+#   Page to process. It may be a local file name, too.
+#
+# PDF-FILE:
+#   Output to write PDF file to.
+
+arg_orientation=""
+arg_pagesize="-f A4"
+arg_page_width=
+arg_page_height=
+arg_margin_bottom="-mb 10mm"
+arg_margin_left="-ml 10mm"
+arg_margin_right="-mr 10mm"
+arg_margin_top="-mt 10mm"
+arg_background=-pb
+
+arg_val_inf=
+arg_val_outf=
+
+head -n 2 "$0" | tail -n 1 | cut -c 3-
+
+while ! [ $# = 0 ]; do
+	case "$1" in
+	(--help)
+		head -n 22 "$0" | tail -n 19 | cut -c 3-
+		exit 0
+		;;
+	(-O|--orientation)
+		case "$2" in
+		(Portrait)  arg_orientation=;;
+		(Landscape) arg_orientation="-l";;
+		(*)         echo "ERROR: Unknown --orientation: $2"; exit 1;;
+		esac
+		shift 2
+		;;
+	(-s|--page-size)     arg_pagesize="-f $2";       shift 2;;
+	(-B|--margin-bottom) arg_margin_bottom="-mb $2"; shift 2;;
+	(-L|--margin-left)   arg_margin_left="-ml $2";   shift 2;;
+	(-R|--margin-right)  arg_margin_right="-mr $2";  shift 2;;
+	(-T|--margin-top)    arg_margin_top="-mt $2";    shift 2;;
+	(--background)       arg_background=-pb;         shift;;
+	(--no-background)    arg_background=;            shift;;
+	(--page-height)      arg_page_height="-h $2";    shift 2;;
+	(--page-width)       arg_page_width="-w $2";     shift 2;;
+
+	(--allow)
+		echo "WARNING: $1 not supported. Dropping argument."
+		shift 2
+		;;
+	(--diable-local-file-access|--enable-local-file-access)
+		echo "WARNING: $1 not supported. Dropping argument."
+		shift
+		;;
+	(--)
+		break
+		;;
+	(*)
+		if [ -z "$arg_val_inf" ]; then
+			arg_val_inf="$1"
+			shift
+		elif [ -z "$arg_val_outf" ]; then
+			arg_val_outf="$1"
+			shift
+		else
+			echo "ERROR: Argument $1 not understood."
+			exit 1
+		fi
+		;;
+	esac
+done
+
+if [ -z "$arg_val_inf" ] || [ -z "$arg_val_outf" ]; then
+	echo ERROR: Missing at least one of the mandatory input or output \
+								arguments.
+	exit 1
+fi
+
+exec puppeteer-pdf $arg_orientation $arg_pagesize $arg_page_height \
+			$arg_page_width $arg_margin_bottom $arg_margin_left \
+			$arg_margin_right $arg_margin_top $arg_background \
+			-p "$arg_val_outf" "$@" $arg_val_inf

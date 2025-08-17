@@ -55,6 +55,7 @@
 	${masysma.nodejspackages}</property>
 <property name="mdpc.depends"    value="${masysma.nodejspackages}"/>
 <property name="mdpc.recommends" value="chromium"/>
+<property name="mdpc.conflicts"  value="wkhtmltopdf"/>
 <property name="mdpc.descrl">
  Updated Contractbook version of puppeteer-pdf - HTML to PDF from the command
  line with Puppeteer.
@@ -90,6 +91,7 @@ src/node_modules /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
 src/package-lock.json /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
 src/puppeteer-pdf.js /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
 puppeteer-pdf /usr/bin
+wkhtmltopdf /usr/bin
 </property>
 
 <!-- PART OF TPL HERE FOR USE IN BUILD -->
