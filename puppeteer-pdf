@@ -1,0 +1,4 @@
+#!/bin/sh -eu
+export CHROME_BIN="${CHROME_BIN:-/usr/bin/chromium}"
+exec /usr/bin/node \
+		/usr/share/mdvl-puppeteer-pdf-wkhtmltopdf/puppeteer-pdf.js "$@"

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build">
+
+<!-- aptitude search ... / apt-cache showpkg ... -->
+<property name="masysma.nodejspackages"
+	>npm, node-color-name, node-get-uri, node-extract-zip, node-ansi-regex,
+	node-agent-base, node-universalify, node-esprima, node-string-width,
+	node-basic-ftp, node-pac-proxy-agent, node-lru-cache, node-escodegen,
+	node-commander, node-browserslist, node-source-map, esbuild,
+	node-fd-slicer, node-devtools-protocol, node-end-of-stream,
+	node-pac-resolver, node-get-caller-file, node-tar-stream,
+	node-base64-js, node-ip-address, node-degenerator, node-ast-types,
+	node-progress, node-has-flag, node-slice-ansi, node-socks,
+	node-color-convert, node-wrappy, node-error-ex, node-wrap-ansi,
+	node-resolve, node-resolve-from, node-json-parse-better-errors,
+	node-yauzl, node-ieee754, node-isurl, node-fs-extra,
+	node-require-directory, node-get-stream, node-tslib, node-pump,
+	node-js-yaml, node-parse-json, node-quickjs-emscripten,
+	node-proxy-from-env, node-ms, node-estraverse, node-through, node-y18n,
+	node-data-uri-to-buffer, node-semver, node-proxy-agent,
+	node-supports-color, node-debug, node-netmask, node-buffer,
+	node-babel7, node-highlight.js, node-ws, node-esutils, node-graceful-fs,
+	node-escape-string-regexp, node-https-proxy-agent, node-jsbn,
+	node-smart-buffer, node-js-tokens, node-cosmiconfig, node-once,
+	node-argparse, node-http-proxy-agent, node-ansi-styles, node-undici,
+	node-tar-fs, node-chalk, node-cliui, node-jsonfile, node-sprintf-js,
+	node-socks-proxy-agent, node-pend, node-buffer-crc32, node-strip-ansi,
+	node-define-properties, node-deep-equal,
+	node-babel-plugin-polyfill-corejs3, node-babel-plugin-polyfill-corejs2,
+	node-babel-plugin-polyfill-regenerator, node-json5,
+	node-unicode-property-aliases-ecmascript, node-convert-source-map,
+	node-regjsparser, node-es-abstract, node-yallist,
+	node-unicode-match-property-value-ecmascript, node-picocolors,
+	node-regexpu-core, node-unicode-canonical-property-names-ecmascript,
+	node-regenerate-unicode-properties, node-caniuse-lite,
+	node-ampproject-remapping, node-jsesc, node-regjsgen,
+	node-lodash-packages, node-debbundle-es-to-primitive,
+	node-function-bind, node-electron-to-chromium, node-object-assign,
+	node-unbzip2-stream, node-is-arrayish</property>
+
+<property name="masysma.nodejsnotindebian">b4a, bare-events, bare-fs, bare-os,
+	bare-path, bare-stream, chromium-bidi, env-paths, esbuild,
+	@esbuild/linux-x64, fast-fifo, file-url, is-url, mitt, puppeteer,
+	@puppeteer/browsers, puppeteer-core, queue-tick, streamx, text-decoder,
+	@tootallnate/quickjs-emscripten, @types/node, @types/yauzl,
+	urlpattern-polyfill, yargs, yargs-parser, zod</property>
+
+<!-- APPLICATION METADATA -->
+<property name="masysma.target"  value="_"/> 
+<property name="mdpc.name"       value="mdvl-puppeteer-pdf-wkhtmltopdf"/>
+<property name="mdpc.section"    value="utils"/>
+<property name="mdpc.arch"       value="all"/>
+<property name="mdpc.descrs"     value="puppeteer-pdf and wkhtmltopdf scripts"/>
+<property name="mdpc.bdep"       value="diff, node, ${masysma.nodejspackages}"/>
+<property name="mdpc.depends"    value="${masysma.nodejspackages}"/>
+<property name="mdpc.recommends" value="chromium"/>
+<property name="mdpc.descrl">
+ Updated Contractbook version of puppeteer-pdf - HTML to PDF from the command
+ line with Puppeteer.
+ .
+ In addition, this package provides a script to replace the deprectated
+ `wkhtmltopdf` by invoking `puppeteer-pdf` with appropriate arguments.
+</property>
+<property name="mdpc.copyright"
+value="Copyright (c) Madis Väin &lt;madisvain@gmail.com&gt; (namespace.ee)"/>
+<property name="mdpc.lblock">
+License: Expat
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+</property>
+
+<property name="mdpc.file.install">
+src/node_modules /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
+src/package-lock.json /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
+src/puppeteer-pdf.js /usr/share/mdvl-puppeteer-pdf-wkhtmltopdf
+puppeteer-pdf /usr/bin
+</property>
+
+<!-- PART OF TPL HERE FOR USE IN BUILD -->
+<property environment="env"/>
+<condition property="masysma.internal.includepath.rel" value="${env.MDVL_CI_PHOENIX_ROOT}" else=".."><isset property="env.MDVL_CI_PHOENIX_ROOT"/></condition>
+<property name="masysma.internal.includepath" location="${masysma.internal.includepath.rel}"/>
+
+<target name="download">
+	<masysma_require_artifact masysmaartifact="puppeteer-pdf.git"
+		masysmaatarget="src" 
+		masysmaadef="https://github.com/Contractbook/puppeteer-pdf.git"
+		/>
+</target>
+
+<!--
+	It seems to be impossible to tell NPM to prefer the OS packages and
+	only download the missing ones. The approach of the script here is thus
+	inverted: First download all using NPM then replace most of the
+	downloaded stuff with the OS-supplied stuff. Finally check if anything
+	unexpected has been added along the way. This is much less secure than
+	downloading only the minimal set of packages but Node JS ecosystem does
+	not seem to be conscerned about the dependency bloat.
+-->
+<target name="build" depends="download">
+	<!-- first download all from NPM -->
+	<exec dir="src" executable="npm" failonerror="true">
+		<arg value="install"/>
+	</exec>
+	<!--
+		check what we have on the system already.
+		shell-out to a script to do the list processing
+	-->
+	<exec dir="src" executable="../replace_downloads_by_os_packages.sh"
+							failonerror="true">
+		<arg value="${masysma.nodejspackages}"/>
+		<arg value="${masysma.nodejsnotindebian}"/>
+	</exec>
+</target>
+
+<!-- CI INTEGRATION -->
+<target name="autoci" depends="autopackage"/>
+
+<!-- TPL IMPORT (PARTIALLY GIVEN ABOVE) -->
+<property name="masysma.internal.loadpath" value="${masysma.internal.includepath}/co-build/ant-build-template.xml"/>
+<condition property="masysma.internal.load" value="file://${masysma.internal.loadpath}" else="https://raw.githubusercontent.com/m7a/co-build/master/ant-build-template.xml"><resourceexists><file file="${masysma.internal.loadpath}"/></resourceexists></condition>
+<import><url url="${masysma.internal.load}"/></import>
+
+</project>
